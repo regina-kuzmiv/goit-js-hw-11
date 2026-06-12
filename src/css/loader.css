@@ -1,11 +1,17 @@
 .loader {
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   width: 48px;
   height: 48px;
   background: #de3500;
   transform: rotateX(65deg) rotate(45deg);
   color: #fff;
   animation: layers1 1s linear infinite alternate;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
 }
 .loader:after {
   content: '';
@@ -13,6 +19,10 @@
   inset: 0;
   background: rgba(255, 255, 255, 0.7);
   animation: layerTr 1s linear infinite alternate;
+}
+.loader.is-visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 @keyframes layers1 {

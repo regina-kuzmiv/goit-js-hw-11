@@ -1,3 +1,7 @@
+// import axios from 'axios';
+
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
 import { getImagesByQuery } from './js/pixabay-api.js';
 import {
@@ -5,4 +9,40 @@ import {
   clearGallery,
   showLoader,
   hideLoader,
+  refs,
 } from './js/render-functions.js';
+
+refs.formEl.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const formData = new FormData(refs.formEl);
+  const query = formData.get('search-text');
+
+  if (!query.trim()) {
+    return;
+  }
+
+  showLoader();
+
+  setTimeout(() => {
+    getImagesByQuery(query)
+      .then(data => {
+        if (!data.hits.length) {
+          iziToast.error({
+            message:
+              'Sorry, there are no images matching your search query. Please try again!',
+          });
+          return;
+        }
+        return data.hits;
+      })
+      .then(images => {
+        if (!images.length) return;
+
+        clearGallery();
+        createGallery(images);
+      })
+      .catch(error => console.log(error))
+      .finally(() => hideLoader());
+  }, 0);
+});
