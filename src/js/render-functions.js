@@ -58,4 +58,3 @@ export const showLoader = () => {
 export const hideLoader = () => {
   refs.loader.classList.remove('is-visible');
 };
-console.log(refs.loader);

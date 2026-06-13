@@ -45,4 +45,5 @@ refs.formEl.addEventListener('submit', e => {
       .catch(error => console.log(error))
       .finally(() => hideLoader());
   }, 0);
+  e.target.reset();
 });
