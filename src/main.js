@@ -22,27 +22,33 @@ refs.formEl.addEventListener('submit', e => {
     return;
   }
 
+  clearGallery();
   showLoader();
 
   setTimeout(() => {
     getImagesByQuery(query)
       .then(data => {
-        if (!data.hits.length) {
+        const images = data.hits;
+
+        if (!images || images.length === 0) {
           iziToast.error({
             message:
               'Sorry, there are no images matching your search query. Please try again!',
           });
-          return;
+          return [];
         }
-        return data.hits;
+        return images;
       })
       .then(images => {
         if (!images.length) return;
 
-        clearGallery();
         createGallery(images);
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        iziToast.error({
+          message: 'Sorry, something went wrong. Please try again!',
+        });
+      })
       .finally(() => hideLoader());
   }, 0);
   e.target.reset();
